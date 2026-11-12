@@ -1,0 +1,15 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local scratch and generated working files
+output/
+tmp/
+*.log
+
+# IMPORTANT: .kiro must NOT be ignored.
+# The /.kiro directory at the repository root contains the Specs, steering
+# documents and agent definitions that this project is built from, and it is
+# required to be visible in this public repository.
