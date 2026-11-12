@@ -11,7 +11,7 @@ No credentials required.
 2. In the Specs panel, open ghostagent-research-workflow to see requirements.md, design.md and tasks.md; the Steering panel shows product, academic-style, structure and tech.
 3. To run the workflow: start a Kiro chat in this workspace and enter a sample research topic, e.g. "The impact of AI tools on college students' learning habits". The topic-analyst agent produces a topic brief; after you confirm the scope, spec-builder generates a research Spec, literature-reviewer builds the literature review framework, and diagram-maker produces Mermaid diagrams.
 4. A complete frozen sample run (input + all outputs) is in examples/sample-run/ if you prefer to inspect results without running anything.
-5. Demo video: [paste your YouTube demo URL]
+5. Demo video: https://youtu.be/F3EKEneyoqA
 ```
 
 ## How the project meets the main technology requirement (uses Kiro)

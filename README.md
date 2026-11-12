@@ -112,7 +112,7 @@ A complete worked example is in [`examples/sample-run/`](examples/sample-run/), 
 
 ## Demo
 
-- Demo video: *(paste your YouTube demo link here after uploading)*
+- Demo video: https://youtu.be/F3EKEneyoqA
 - The video shows: the problem (0:00), Spec generation (0:10), literature review framework and diagrams (0:20), multi-agent collaboration (0:30), the `.kiro` configuration (0:40), and the closing summary (0:50).
 
 ## Why a Spec for Research?
