@@ -102,3 +102,159 @@ html[lang="en"] .agent-title{overflow-wrap:anywhere}
 html[lang="en"] .agent-card-head{gap:7px}
 html[lang="en"] .project-counts span{white-space:normal;text-align:center;line-height:1.6}
 @media(max-width:600px){.top-actions{gap:7px}.language-control{gap:3px}.language-control select{max-width:102px;padding:6px;font-size:10px}.top-actions .connection{display:none}.topbar{gap:8px}.breadcrumbs{min-width:0;overflow:hidden}.breadcrumbs strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}html[lang="en"] .page-heading h1{overflow-wrap:anywhere}html[lang="en"] .section-header{gap:10px;flex-wrap:wrap}html[lang="en"] .agent-card-foot{gap:5px;flex-wrap:wrap}}
+
+/* English UI: readable labels, natural word wrapping and room for longer controls. */
+html[lang="en"] body{font-family:"Segoe UI",Inter,Arial,sans-serif;line-height:1.5}
+html[lang="en"] button{line-height:1.4;white-space:normal;word-break:normal}
+html[lang="en"] button i,html[lang="en"] .agent-symbol,html[lang="en"] .workspace-icon{flex-shrink:0}
+html[lang="en"] .page-heading{align-items:flex-start;flex-wrap:wrap;gap:18px 24px}
+html[lang="en"] .page-heading>div:first-child{flex:1 1 340px;min-width:0}
+html[lang="en"] .page-heading h1{font-size:clamp(24px,2.2vw,32px);letter-spacing:-.55px;line-height:1.22;word-break:normal;overflow-wrap:normal;text-wrap:balance;max-width:26ch}
+html[lang="en"] .page-heading p{font-size:13px;line-height:1.65;max-width:66ch;text-wrap:pretty}
+html[lang="en"] .eyebrow{font-size:10px;letter-spacing:1.6px;line-height:1.6}
+html[lang="en"] .heading-actions{flex:0 1 auto;max-width:100%;gap:8px}
+html[lang="en"] .heading-actions button{font-size:12px;padding:9px 12px;min-height:38px}
+html[lang="en"] .workspace-picker>div{min-width:0}
+html[lang="en"] .workspace-picker strong{font-size:12px;line-height:1.5}
+html[lang="en"] .workspace-picker small{font-size:11px}
+html[lang="en"] nav a{line-height:1.45;gap:9px}
+html[lang="en"] nav a i{flex-shrink:0}
+html[lang="en"] .nav-key{flex-shrink:0}
+html[lang="en"] .agent-roster>span{line-height:1.5}
+html[lang="en"] .agent-roster small,html[lang="en"] .local-note small{font-size:11px;line-height:1.6}
+html[lang="en"] .topbar{gap:16px}
+html[lang="en"] .breadcrumbs{min-width:0;line-height:1.5}
+html[lang="en"] .breadcrumbs strong{min-width:0}
+html[lang="en"] .top-actions{flex-shrink:0;gap:12px}
+html[lang="en"] .project-banner{align-items:flex-start;flex-wrap:wrap}
+html[lang="en"] .project-identity{flex:1 1 360px;align-items:flex-start}
+html[lang="en"] .project-identity h2{font-size:17px;line-height:1.45;letter-spacing:-.15px}
+html[lang="en"] .project-meta{font-size:11px;line-height:1.6;gap:8px 14px}
+html[lang="en"] .project-counts{flex:0 0 auto;margin:4px 0 0;gap:20px}
+html[lang="en"] .project-counts>div{max-width:125px}
+html[lang="en"] .project-counts>div+div{padding-left:20px}
+html[lang="en"] .project-counts span{font-size:11px;line-height:1.45;white-space:normal}
+html[lang="en"] .section-header{gap:12px 20px;flex-wrap:wrap;align-items:flex-start}
+html[lang="en"] .section-header h2{font-size:14px;flex-wrap:wrap;line-height:1.6}
+html[lang="en"] .section-header h2 small{font-size:10px}
+html[lang="en"] .section-header>span{font-size:11px;line-height:1.6}
+html[lang="en"] .section-header .legend{max-width:100%;align-items:baseline}
+html[lang="en"] .agent-card-head{gap:10px;align-items:flex-start;min-height:88px}
+html[lang="en"] .agent-title{font-size:12px;line-height:1.45;min-width:0;word-break:normal;overflow-wrap:normal}
+html[lang="en"] .agent-title small{font-size:11px;line-height:1.45;margin-top:4px}
+html[lang="en"] .card-menu{flex-shrink:0;line-height:1}
+html[lang="en"] .card-kicker{font-size:10px;line-height:1.6;letter-spacing:1px;min-height:32px}
+html[lang="en"] .mini-document,html[lang="en"] .mini-document h4,html[lang="en"] .spec-mini div{font-size:11px;line-height:1.6}
+html[lang="en"] .spec-mini div b{font-size:10px}
+html[lang="en"] .theme-mini div{font-size:11px;line-height:1.55}
+html[lang="en"] .theme-mini small{font-size:10px;line-height:1.5}
+html[lang="en"] .agent-card-foot{gap:8px;flex-wrap:wrap;font-size:11px;line-height:1.5}
+html[lang="en"] .agent-card-foot>span{min-width:0}
+html[lang="en"] .card-output{margin-left:auto;font-size:10px}
+html[lang="en"] .panel-title{flex-wrap:wrap;gap:10px 14px;align-items:flex-start}
+html[lang="en"] .panel-title h2{font-size:14px;line-height:1.5;min-width:0;flex-wrap:wrap}
+html[lang="en"] .panel-title span{font-size:11px;line-height:1.5}
+html[lang="en"] .timeline-step strong{font-size:11px;line-height:1.45}
+html[lang="en"] .timeline-step small{font-size:10px;line-height:1.5}
+html[lang="en"] .panel-note{font-size:12px;line-height:1.7}
+html[lang="en"] .activity-row>div{min-width:0}
+html[lang="en"] .activity-row p{font-size:12px;line-height:1.6}
+html[lang="en"] .activity-row small{font-size:11px;line-height:1.6;overflow-wrap:anywhere}
+html[lang="en"] .activity-row time{font-size:10px;font-variant-numeric:tabular-nums}
+html[lang="en"] .activity-icon{flex-shrink:0}
+html[lang="en"] .notice{font-size:12px;line-height:1.7}
+html[lang="en"] .status-pill,html[lang="en"] .tag,html[lang="en"] .draft-pill{font-size:10px;line-height:1.5}
+html[lang="en"] .tag{max-width:100%;white-space:normal}
+html[lang="en"] .tabs{flex-wrap:wrap;gap:6px}
+html[lang="en"] .tab{font-size:12px}
+html[lang="en"] .document-toolbar{flex-wrap:wrap;font-size:11px;line-height:1.6}
+html[lang="en"] .document-toolbar>span{min-width:0;overflow-wrap:anywhere}
+html[lang="en"] .document-toolbar>div{flex-shrink:0}
+html[lang="en"] button.small{font-size:11px;min-height:32px}
+html[lang="en"] .doc-body{font-size:14px;line-height:1.8;overflow-wrap:break-word}
+html[lang="en"] .doc-body h1{font-size:22px;line-height:1.35;letter-spacing:-.25px}
+html[lang="en"] .doc-body h2{font-size:17px;line-height:1.45}
+html[lang="en"] .doc-body h3{font-size:14px;line-height:1.5}
+html[lang="en"] .doc-body table{font-size:12px}
+html[lang="en"] .task-summary{font-size:12px}
+html[lang="en"] .search{flex-wrap:wrap}
+html[lang="en"] .search input{flex:1 1 120px;min-width:0;width:auto;font-size:12px}
+html[lang="en"] .search>span{flex:1 0 100%;font-size:11px!important;margin:0!important;line-height:1.6}
+html[lang="en"] .task-row>div{min-width:0}
+html[lang="en"] .task-row strong{font-size:12px;line-height:1.65}
+html[lang="en"] .task-row small{font-size:11px;line-height:1.6}
+html[lang="en"] .task-row .tag{flex-shrink:0;font-size:10px}
+html[lang="en"] .outline button{font-size:12px;line-height:1.6}
+html[lang="en"] .outline .outline-group{font-size:10px;line-height:1.6}
+html[lang="en"] .outline-quote{font-size:12px;line-height:1.7}
+html[lang="en"] .diagram-toolbar{flex-wrap:wrap}
+html[lang="en"] .diagram-toolbar select{flex:1 1 180px;min-width:0;width:0;font-size:12px}
+html[lang="en"] .diagram-actions{flex-shrink:0;flex-wrap:wrap}
+html[lang="en"] .diagram-caption{font-size:11px;line-height:1.7;overflow-wrap:anywhere}
+html[lang="en"] .context-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+html[lang="en"] .context-stat>div{min-width:0}
+html[lang="en"] .context-stat small{font-size:12px;line-height:1.5}
+html[lang="en"] .rule-row{font-size:13px;line-height:1.65}
+html[lang="en"] .rule-row small{font-size:12px;line-height:1.7}
+html[lang="en"] .wf-panel p,html[lang="en"] .wf-validation{font-size:13px;line-height:1.7}
+html[lang="en"] .wf-open{flex-wrap:wrap}
+html[lang="en"] .wf-open select{flex:1 1 230px;width:auto;font-size:12px}
+html[lang="en"] .wf-summary{gap:10px 18px;line-height:1.6}
+html[lang="en"] #modal-body{font-size:13px;line-height:1.75}
+html[lang="en"] .modal-heading{gap:14px;align-items:flex-start}
+html[lang="en"] .modal-heading h2{font-size:21px;line-height:1.35;min-width:0}
+html[lang="en"] #modal-close{flex-shrink:0}
+html[lang="en"] .modal-actions{flex-wrap:wrap}
+html[lang="en"] .import-option{line-height:1.5}
+html[lang="en"] .import-option small{font-size:12px;line-height:1.6}
+html[lang="en"] .error-text{font-size:12px;line-height:1.7}
+html[lang="en"] #toast{font-size:12px;line-height:1.65}
+html[lang="en"] .footer{flex-wrap:wrap;font-size:10px;line-height:1.6;letter-spacing:0}
+@media(min-width:901px) and (max-width:1399px){
+ html[lang="en"] .agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html[lang="en"] .agent-card{min-height:310px}
+ html[lang="en"] .agent-card-head{min-height:82px}
+ html[lang="en"] .dashboard-bottom{grid-template-columns:1fr}
+ html[lang="en"] .split-view{grid-template-columns:1fr}
+}
+@media(max-width:1150px){
+ html[lang="en"] .top-actions .connection{display:none}
+ html[lang="en"] .literature-layout{grid-template-columns:200px minmax(0,1fr)}
+}
+@media(max-width:900px){
+ html[lang="en"] .project-identity{flex-basis:100%}
+ html[lang="en"] .literature-layout{grid-template-columns:1fr}
+ html[lang="en"] .wf-open select{flex-basis:auto;width:100%}
+}
+@media(max-width:600px){
+ html[lang="en"] .topbar{gap:8px}
+ html[lang="en"] .top-actions{gap:7px}
+ html[lang="en"] .breadcrumbs{font-size:10px;gap:5px}
+ html[lang="en"] .page-heading{display:block}
+ html[lang="en"] .page-heading h1{font-size:25px;letter-spacing:-.35px;overflow-wrap:normal}
+ html[lang="en"] .page-heading p{font-size:13px}
+ html[lang="en"] .heading-actions{margin-top:16px}
+ html[lang="en"] .heading-actions button{flex:1 1 120px;font-size:12px}
+ html[lang="en"] .agent-card{min-height:280px}
+ html[lang="en"] .agent-card-head{min-height:82px}
+ html[lang="en"] .project-identity h2{font-size:15px;line-height:1.5}
+ html[lang="en"] .project-meta{gap:7px 10px}
+ html[lang="en"] .panel-title{padding:15px}
+ html[lang="en"] .timeline{gap:12px}
+ html[lang="en"] .timeline-step{min-width:96px}
+ html[lang="en"] .doc-body{padding:18px 16px;font-size:14px}
+ html[lang="en"] .doc-body h1{font-size:20px}
+ html[lang="en"] .task-row{display:grid;grid-template-columns:14px minmax(0,1fr);gap:6px 10px}
+ html[lang="en"] .task-row>.tag{grid-column:2;justify-self:start;margin-top:2px}
+ html[lang="en"] .context-stat-grid{grid-template-columns:1fr}
+ html[lang="en"] .context-stat{padding:14px;gap:12px}
+ html[lang="en"] .context-stat i{display:inline-flex}
+ html[lang="en"] .context-stat>div{display:flex;align-items:center;gap:12px}
+ html[lang="en"] .context-stat small{margin:0}
+ html[lang="en"] .wf-panel{padding:17px}
+ html[lang="en"] .wf-panel .panel-title{padding:0 0 14px}
+ html[lang="en"] .modal-heading h2{font-size:19px}
+ html[lang="en"] .modal-actions button{flex:1 1 150px}
+ html[lang="en"] dialog{padding:18px}
+ html[lang="en"] .footer>span:first-child{flex-wrap:wrap}
+}

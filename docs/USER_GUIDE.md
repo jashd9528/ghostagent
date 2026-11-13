@@ -18,7 +18,7 @@ Use the top-bar language selector for **Auto (IP)**, **中文** or **English**. 
 
 The lookup is bounded to 3.5 seconds and cached in the current browser tab for one hour. On network errors, invalid responses, rate limits or direct file previews, the interface falls back to browser language (Chinese browser → Chinese, otherwise English). Manual selection is saved in local browser storage and bypasses IP requests; choose Auto to enable region detection again. If browser storage is blocked, switching still works for the current page. IP-based language is approximate.
 
-Navigation, controls, dialogs, UI statuses and accessible labels switch without replacing the editor or discarding typed text. Research document bodies, project titles, task wording, Mermaid diagrams, raw logs and user-entered values remain verbatim. Changing interface language does not translate or rewrite research files.
+Navigation, controls, dialogs, UI statuses and accessible labels switch without replacing the editor or discarding typed text. Research document bodies, project titles, task wording, Mermaid diagrams, raw logs and user-entered values remain verbatim. Changing interface language does not translate or rewrite research files. English mode uses larger supporting text, natural word wrapping, responsive toolbars and task status rows. Agent cards use two columns on medium desktop widths and one on phones; document tables and diagrams retain their own scroll areas.
 
 ### Connected workflow mode
 
