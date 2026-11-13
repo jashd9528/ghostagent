@@ -92,3 +92,13 @@ dialog{background:linear-gradient(145deg,#14213d,#0c172d);border-color:#53638f;b
   .dashboard-bottom{gap:12px}.timeline{overflow:auto;justify-content:flex-start}.timeline-step{min-width:78px}.timeline:before{left:48px;right:48px;width:calc(100% - 96px)}
   .heading-actions{flex-wrap:wrap}.heading-actions button{flex:1}.footer{margin:0 12px}
 }
+
+/* Language preference is available on every route, including narrow screens. */
+.language-control{display:flex;align-items:center;gap:5px;flex-shrink:0;color:var(--muted)}
+.language-control select{max-width:128px;min-height:34px;font-size:11px;padding:6px 8px;background:#151f35;color:var(--text);border:1px solid #465377}
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+html[lang="en"] .heading-actions{flex-wrap:wrap}
+html[lang="en"] .agent-title{overflow-wrap:anywhere}
+html[lang="en"] .agent-card-head{gap:7px}
+html[lang="en"] .project-counts span{white-space:normal;text-align:center;line-height:1.6}
+@media(max-width:600px){.top-actions{gap:7px}.language-control{gap:3px}.language-control select{max-width:102px;padding:6px;font-size:10px}.top-actions .connection{display:none}.topbar{gap:8px}.breadcrumbs{min-width:0;overflow:hidden}.breadcrumbs strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}html[lang="en"] .page-heading h1{overflow-wrap:anywhere}html[lang="en"] .section-header{gap:10px;flex-wrap:wrap}html[lang="en"] .agent-card-foot{gap:5px;flex-wrap:wrap}}

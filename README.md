@@ -6,7 +6,7 @@ GhostAgent generates a topic brief, a per-topic Research Spec, a thematic litera
 
 ## Visual research workspace
 
-Open `frontend/index.html` directly for the screenshot-inspired, dark research workspace: four agent cards, Requirements / Design / Tasks views, dependency-aware task drafts, literature outline, local Mermaid rendering and project history. The interface uses Chinese navigation and English research labels and adapts to narrow screens.
+Open `frontend/index.html` directly for the screenshot-inspired, dark research workspace: four agent cards, Requirements / Design / Tasks views, dependency-aware task drafts, literature outline, local Mermaid rendering and project history. The interface supports Chinese and English and adapts to narrow screens. Use the top-bar language selector: Auto (IP), 中文 or English. Auto uses an IP country lookup (CN/HK/MO/TW → Chinese; other regions → English), falls back to browser language if lookup fails, and respects saved manual choices. Research documents and raw logs remain in their original language.
 
 For real workflow operations, run `python -B workflow_server.py` from the repository root and open the workspace address printed by the launcher. The **Workflow** page opens existing `output/<slug>` topics, creates new ones, reviews and confirms the exact committed brief, submits full-stage candidates, refreshes status and runs validation. The built-in sample is read-only; copying it seeds only a topic and does not inherit simulated approval. The Kiro generation panel launches a candidate-only Kiro CLI session; review the generated documents before formal submission.
 

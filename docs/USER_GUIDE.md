@@ -12,6 +12,14 @@ Open `frontend/index.html` directly. Four ready planning stages do not mean the 
 - **Context:** inspect recorded events, rules and document structure. Draft workspace JSON is an archival export, not a manager state or supported topic import format.
 - **New research:** save an idea and export an initialization request JSON. This only records input; initialize and generate research through the existing Python/Kiro workflow.
 
+### Interface language
+
+Use the top-bar language selector for **Auto (IP)**, **中文** or **English**. The default is Auto: an HTTPS request to `https://ipapi.co/country/` returns the visitor's IP country (CN, HK, MO and TW select Chinese; all other valid country codes select English). The provider sees the visitor's public IP as part of that request; no research content, credentials or user-entered documents are sent. This determines region, not identity or exact location.
+
+The lookup is bounded to 3.5 seconds and cached in the current browser tab for one hour. On network errors, invalid responses, rate limits or direct file previews, the interface falls back to browser language (Chinese browser → Chinese, otherwise English). Manual selection is saved in local browser storage and bypasses IP requests; choose Auto to enable region detection again. If browser storage is blocked, switching still works for the current page. IP-based language is approximate.
+
+Navigation, controls, dialogs, UI statuses and accessible labels switch without replacing the editor or discarding typed text. Research document bodies, project titles, task wording, Mermaid diagrams, raw logs and user-entered values remain verbatim. Changing interface language does not translate or rewrite research files.
+
 ### Connected workflow mode
 
 Run `python -B workflow_server.py` from the repository root, then open the workspace address printed by the launcher. This mode serves the UI and a local API bound only to loopback. It requires no extra packages. Use `--port` if the default address is occupied. Stop it with Ctrl+C in its terminal.
