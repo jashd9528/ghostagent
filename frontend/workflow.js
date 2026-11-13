@@ -41,5 +41,7 @@ actions.new=()=>bridge.connected?workflowNew():offlineNew();
 const previousHelp=document.querySelector('#help').onclick;
 document.querySelector('#help').onclick=()=>{if(!bridge.connected){previousHelp();return;}modal('已连接的研究工作流',`<p>在“工作流”中打开或新建研究；在内容页面编辑草稿，再审阅完整阶段并正式提交。管理器负责版本指纹、依赖和保护区。</p><p>选题必须先提交，再阅读正式文件并明确确认，之后才能提交研究计划。内置样例只读，复制后不继承模拟确认。</p><p>在工作流页面用 Kiro 生成阶段候选。生成后审阅并正式提交；选题确认仍须单独操作。运行日志来自实际进程，不代表来源已核实。</p><button data-action="workflow-go">打开工作流</button>`);};
 async function connectWorkflow(){if(!/^https?:$/.test(location.protocol)||location.hostname.endsWith('github.io')){bridge.error=location.hostname.endsWith('github.io')?'在线演示版只提供样例浏览、编辑和候选导出；正式提交与 Kiro 生成请在本机启动 workflow_server.py。':'';render();return;}try{const session=await workflowApi('session');bridge={...bridge,connected:true,token:session.token,projects:session.projects};let last='sample';try{last=localStorage.getItem('ghostagent.live.last')||'sample';}catch{}if(!session.projects.some(p=>p.id===last))last='sample';await workflowOpen(last);}catch(error){bridge.error=error.message;render();}}
-page=location.hash.slice(1)==='workflow'?'workflow':page;
+function routeFromHash(){const next=['dashboard','spec','literature','context','workflow'].includes(location.hash.slice(1))?location.hash.slice(1):'dashboard';if(next===page){render();return;}page=next;render();}
+window.addEventListener('hashchange',routeFromHash);
+page=['dashboard','spec','literature','context','workflow'].includes(location.hash.slice(1))?location.hash.slice(1):page;
 render();connectWorkflow();
