@@ -7,7 +7,7 @@ This guide covers research generation in Kiro and local state management with Py
 Open `frontend/index.html` directly. Four ready planning stages do not mean the ten research tasks are complete. Sample confirmation is explicitly simulated.
 
 - **Import project:** select exactly one topic folder or multiple Markdown/state files. Files stay local. With state JSON, original-byte hashes and upstream dependencies determine freshness; this is not structural validation. Without state, documents are untracked. Do not select multiple topics.
-- **Research Spec:** switch Requirements / Design / Tasks, edit Markdown and save browser drafts. Task checkboxes enforce prerequisites; clearing a task also clears dependent completions. No formal commit occurs until submitted from the connected Workflow page.
+- **Research Specification:** switch Requirements / Design / Tasks, edit Markdown and save browser drafts. Task checkboxes enforce prerequisites; clearing a task also clears dependent completions. No formal commit occurs until submitted from the connected Workflow page.
 - **Literature and diagrams:** browse themes, render all three sample Mermaid diagrams, zoom and export SVG. Editing keeps raw Markdown. Rendering errors are shown with source rather than presented as success.
 - **Context:** inspect recorded events, rules and document structure. Draft workspace JSON is an archival export, not a manager state or supported topic import format.
 - **New research:** save an idea and export an initialization request JSON. This only records input; initialize and generate research through the existing Python/Kiro workflow.
@@ -20,6 +20,8 @@ The lookup is bounded to 3.5 seconds and cached in the current browser tab for o
 
 Navigation, controls, dialogs, UI statuses and accessible labels switch without replacing the editor or discarding typed text. Research document bodies, project titles, task wording, Mermaid diagrams, raw logs and user-entered values remain verbatim. Changing interface language does not translate or rewrite research files. English mode uses larger supporting text, natural word wrapping, responsive toolbars and task status rows. Agent cards use two columns on medium desktop widths and one on phones; document tables and diagrams retain their own scroll areas.
 
+English interface copy uses consistent terms: **candidate** for proposed stage documents, **committed files** for documents accepted by the manager, and **commit** for writing an approved stage. A commit does not mean public publication. Page headings use title case; buttons use sentence case. Counts and dependency messages use complete English sentences. Document text, project titles, logs and exported research content retain their original wording.
+
 ### Connected workflow mode
 
 Run `python -B workflow_server.py` from the repository root, then open the workspace address printed by the launcher. This mode serves the UI and a local API bound only to loopback. It requires no extra packages. Use `--port` if the default address is occupied. Stop it with Ctrl+C in its terminal.
@@ -29,9 +31,9 @@ Run `python -B workflow_server.py` from the repository root, then open the works
 3. Edit drafts in the normal document pages or open **Edit and submit candidate** for any stage. Spec submissions include all three documents; diagrams can be edited here as Mermaid Markdown. Save candidates to browser storage if not ready to submit.
 4. Review every candidate, enter a change reason and explicitly submit. The manager validates and publishes the stage, updates events and returns refreshed status. Original protected student-edit contents override candidates. Errors preserve the browser candidate and leave rejected stages unpublished.
 5. After topic submission, open **Review and confirm committed topic**, read the actual formal brief and tick the explicit approval checkbox. Confirmation binds its exact hash; it is not automatically granted by copying or opening a topic.
-6. Run **Full validation** to inspect errors and warnings. An incomplete research has actionable missing-stage errors. Source-needed and renderer warnings remain visible even on a structural pass.
+6. Run **Run full validation** to inspect errors and warnings. An incomplete research project has actionable missing-stage errors. Source-needed and renderer warnings remain visible even on a structural pass.
 
-Refresh preserves pending candidates and their captured fingerprints. If another editor or Kiro changes documents, submission rejects the stale base. Use **Read latest files and compare**, inspect the original text beside each candidate, merge required changes and tick the reconciliation acknowledgement before resubmitting. Do not simply force old content through using a new token. Task checkboxes remain drafts until the full Spec is submitted.
+Refresh preserves pending candidates and their captured fingerprints. If another editor or Kiro changes documents, submission rejects the stale base. Use **Load latest files for comparison**, inspect the original text beside each candidate, merge required changes and tick the reconciliation acknowledgement before resubmitting. Do not simply force old content through using a new token. Task checkboxes remain drafts until the full Spec is submitted.
 
 Connected drafts are scoped by topic ID and retain their original stage bases across brief changes. Offline drafts remain scoped by topic and brief hash. Browser persistence depends on storage availability and workspace origin; export important drafts before clearing browser data. Switching topics keeps saved drafts; unfinished modal typing should be saved first. After a timeout, refresh formal state before retrying because publication may already have completed.
 
