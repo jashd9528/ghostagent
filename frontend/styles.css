@@ -15,3 +15,80 @@ svg{width:18px;height:18px;flex-shrink:0;vertical-align:middle}
 .wf-panel{padding:22px;margin-bottom:18px}.wf-panel h2{font-size:16px;margin:0 0 14px}.wf-panel p{font-size:12px;line-height:1.85;color:#a1afc7}.wf-panel .panel-title{padding:0 0 16px}.wf-open{display:flex;gap:12px;margin-top:8px}.wf-open select{flex:1;min-width:0}.wf-stage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.wf-summary{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:18px 0;font-size:12px;color:#becbe0}.wf-validation{font-size:12px;line-height:1.9;padding:14px;background:#10192b;border-radius:8px;margin-bottom:15px}.wf-validation li{overflow-wrap:anywhere}.wf-candidate{min-height:220px!important;font-family:Consolas,monospace;font-size:12px;line-height:1.7}.wf-original{max-height:240px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;background:#0c1425;padding:14px;color:#b3c3d9;font-size:12px}.wf-check{display:flex!important;align-items:flex-start;gap:10px;line-height:1.8;margin-top:16px!important}.wf-check input{width:auto!important;flex:none;margin-top:5px}#modal-body input:not([type=checkbox]),.wf-open select{background:#0f1728;border:1px solid #36435e;color:#dbe5f5;border-radius:6px;padding:10px;width:100%}#modal-body label{display:block;margin:15px 0 8px;font-size:12px;color:#bfcee3}#modal-body code{overflow-wrap:anywhere}button:disabled{opacity:.45;cursor:not-allowed}.wf-panel .heading-actions{justify-content:flex-start;flex-wrap:wrap}@media(max-width:760px){.wf-stage-grid{grid-template-columns:1fr}.wf-open{flex-direction:column}.wf-summary{gap:10px}}
 
 .kiro-panel{margin-top:20px}.kiro-job{padding:16px 0;border-top:1px solid var(--line)}.kiro-job-title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.kiro-job small{color:var(--muted);font-size:10px}.kiro-job .heading-actions{margin:12px 0;flex-wrap:wrap}.kiro-log{white-space:pre-wrap;overflow-wrap:anywhere;max-height:45vh;overflow:auto;background:#0b1222;border:1px solid var(--line);border-radius:8px;padding:15px;font:11px/1.8 Consolas,monospace}.kiro-panel>p{overflow-wrap:anywhere}
+
+
+/* Reference-inspired visual polish: GhostAgent collaboration hub. */
+:root{
+  --bg:#071129;
+  --panel:#0d1831;
+  --panel2:#111d3a;
+  --line:#26385f;
+  --muted:#8798b9;
+  --text:#edf3ff;
+  --cyan:#70e5ef;
+  --purple:#a98cff;
+  --green:#70dfbd;
+  --orange:#efb083;
+  --accent:#8b75ff;
+}
+html{background:var(--bg)}
+body{
+  background:
+    radial-gradient(900px 430px at 72% -8%,#26377755,transparent 67%),
+    radial-gradient(620px 420px at 96% 60%,#173d4b3b,transparent 70%),
+    var(--bg);
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.2;z-index:-1;
+  background-image:linear-gradient(#87a6d30d 1px,transparent 1px),linear-gradient(90deg,#87a6d30d 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:linear-gradient(to bottom,#000,transparent 78%);
+}
+.sidebar{
+  background:linear-gradient(180deg,#0b1530 0%,#0a1228 72%,#0b142c 100%);
+  border-right-color:#24365c;
+  box-shadow:12px 0 42px #02071255;
+}
+.brand{letter-spacing:-.9px}.brand small{color:#8aa5ca}
+.workspace-picker{background:linear-gradient(135deg,#18254a,#111d38);border-color:#334879;box-shadow:inset 0 1px #ffffff08,0 12px 28px #02071422}
+nav a{color:#9aaccc}nav a:hover{background:#1a2a4a;border-color:#2c4070}
+nav a.active{background:linear-gradient(90deg,#8b75ff22,#70dbe40a);border-color:#947df15a;box-shadow:inset 3px 0 #a68fff}
+.main-shell{background:linear-gradient(180deg,#09132a20,transparent 25%)}
+.topbar{background:#09142ad9;border-bottom-color:#263960;backdrop-filter:blur(16px)}
+.breadcrumbs strong{color:#d2dcf0}
+main{padding-top:34px}
+.page-heading{margin-bottom:28px}.eyebrow{color:#9f8bff;letter-spacing:2.5px}.page-heading h1{font-size:29px;text-shadow:0 0 28px #8d7aff22}.page-heading p{color:#a1b1ce}
+button{background:#152342;border-color:#30446d;box-shadow:inset 0 1px #ffffff08}button:hover{background:#203258;border-color:#496197}button.primary{background:linear-gradient(135deg,#8b75f4,#7465da);border-color:#b6a8ff;box-shadow:0 8px 26px #7968e83d,inset 0 1px #ffffff35}
+.project-banner{
+  background:linear-gradient(115deg,#172346 0%,#121f3d 56%,#103342 100%);
+  border-color:#43558a;box-shadow:0 16px 46px #01061133,inset 0 1px #ffffff0b;
+}
+.project-banner:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 0 62%,#72e0ee0c 80%,#a991ff12);pointer-events:none}
+.project-symbol{background:linear-gradient(145deg,#8768dd32,#55dce21c);border-color:#7c69c5;box-shadow:0 0 22px #8d79f52b}
+.project-counts strong{color:#e9edff}.project-counts span{color:#9aabca}
+.section-header{margin-top:27px}.section-header h2{color:#dbe5f7}.section-header h2 small{border-color:#3c5077;background:#152341}.section-header>span{color:#8da2c4}
+.agent-grid{gap:16px}
+.panel{background:linear-gradient(145deg,#111d39,#0d172d 68%,#0d1d31);border-color:#2a3d65;box-shadow:0 12px 35px #01061124,inset 0 1px #ffffff06}
+.agent-card{min-height:318px}.agent-card:hover{transform:translateY(-5px);border-color:#6675ad;box-shadow:0 18px 42px #01061155,0 0 0 1px #8e7bff24}
+.agent-card:before{height:2px;opacity:.95;filter:blur(.2px)}
+.agent-card-head{border-bottom-color:#2a3d61;background:linear-gradient(90deg,#ffffff03,transparent)}
+.agent-symbol{box-shadow:0 0 18px color-mix(in srgb,var(--agent-color) 17%,transparent)}
+.card-kicker{color:#8196bc;letter-spacing:1.4px}.mini-document{background:linear-gradient(145deg,#172746,#121f39);border-color:#354b76;box-shadow:inset 0 1px #ffffff06}.mini-document h4{color:#e0e8f9}.mini-line{background:#455a82}.spec-mini div{background:linear-gradient(90deg,#1b2a49,#172541);border-color:#344b77}.theme-mini{border-left-color:#8b674a}.theme-mini div{color:#d1d5e4}.theme-mini small{color:#8a9dbb}
+.agent-card-foot{background:#0b162c;border-top-color:#2a3d61}.card-output{color:#8ca1c2!important}
+.dashboard-bottom{gap:18px}.panel-title{background:linear-gradient(90deg,#ffffff04,transparent);border-bottom-color:#2a3d61}.panel-title h2{color:#dbe5f7}.timeline:before{background:linear-gradient(90deg,#62c9bb,#9d83ff,#70ddec);box-shadow:0 0 10px #8c7bff55}.step-circle{box-shadow:0 0 18px #6ed9bc26}.activity-row{border-bottom-color:#253858}.activity-icon{background:#8b75f51a;border-color:#4d4777}.notice{background:#bd925712;border-color:#98754a66;color:#c8b998}
+.tabs{background:#101d39;border-bottom-color:#2c416b}.tab.selected{box-shadow:0 0 18px #8c77f526}.document-toolbar{border-bottom-color:#293d64}.doc-body{color:#b2c0d8}.doc-body h1{color:#eef3ff}.doc-body h2{color:#dfe7f7}.task-row{border-bottom-color:#293d62}.task-summary{border-bottom-color:#293d62}.progress-track{background:#26395e}.progress-track span{box-shadow:0 0 14px #81d7e666}
+.outline button.selected{background:linear-gradient(90deg,#8b75f52a,#8b75f506);border-left:2px solid #a48dff}.diagram-canvas{background:#f3f6fd;box-shadow:inset 0 0 35px #a5b3d122}.context-stat{background:linear-gradient(145deg,#152443,#101b34);border-color:#2e436d}
+dialog{background:linear-gradient(145deg,#14213d,#0c172d);border-color:#53638f;box-shadow:0 24px 100px #000b,0 0 0 1px #8c78ff22}
+#toast{background:linear-gradient(135deg,#26335b,#1a2947);border-color:#71659f;box-shadow:0 14px 40px #0008}
+.footer{border-top-color:#26385b;color:#7187aa}
+@media(min-width:1400px){main{max-width:1740px}.agent-grid{gap:18px}.agent-card{min-height:332px}}
+@media(max-width:900px){body:before{opacity:.12}.topbar{background:#09142af2}.agent-card:hover{transform:none}}
+@media(max-width:600px){
+  .sidebar{width:58px;padding:20px 7px}.main-shell{margin-left:58px;width:calc(100% - 58px)}
+  .ghost{width:32px;height:37px}nav{margin-top:28px}nav a{padding:12px 0}nav a i svg{width:20px;height:20px}
+  main{padding:18px 12px 22px}.topbar{height:53px;padding:0 12px}.avatar{width:27px;height:27px}.page-heading h1{font-size:22px}.page-heading p{font-size:10px;line-height:1.7}
+  .project-banner{border-radius:10px}.project-symbol{width:38px;height:40px}.project-identity h2{font-size:12px}.project-meta{gap:8px;font-size:9px}
+  .agent-grid{gap:12px}.agent-card{min-height:248px}.agent-card-head{padding:15px}.agent-card-body{padding:14px}.agent-card-foot{padding:11px 14px}
+  .dashboard-bottom{gap:12px}.timeline{overflow:auto;justify-content:flex-start}.timeline-step{min-width:78px}.timeline:before{left:48px;right:48px;width:calc(100% - 96px)}
+  .heading-actions{flex-wrap:wrap}.heading-actions button{flex:1}.footer{margin:0 12px}
+}
