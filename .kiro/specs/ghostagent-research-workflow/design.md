@@ -1,106 +1,55 @@
 # Design — GhostAgent Research Workflow
 
-## Overview
+Kiro produces research content. A Python standard-library executable manages the lifecycle of that content; no web server or database is required.
 
-GhostAgent is implemented entirely as Kiro configuration. The runtime is Kiro
-itself; the "program" is this Spec plus the steering documents; the workers
-are four custom agents with single responsibilities; the shared state is a
-set of Markdown files per topic. This design keeps every intermediate result
-human-readable, diff-able and resumable.
+## Components
 
-## Architecture
+| Component | Responsibility |
+| --- | --- |
+| research-coordinator | Resume, select the next stage and request scope approval |
+| Four research agents | Generate topic, Spec, literature framework and diagram candidates |
+| ghostagent.py | Init, status, confirm, commit and validate |
+| Workflow Spec | Requirements for this software, under .kiro/specs/ |
+| Per-topic Research Spec | The student's own requirements, method, chapter plan and tasks |
+| State and session log | Committed hashes, scope approval and ordered event history |
 
 ```mermaid
-flowchart LR
-    subgraph Config[".kiro (this repository)"]
-        SPEC[Workflow Spec<br/>requirements / design / tasks]
-        STEER[Steering<br/>product / academic-style / structure / tech]
-        AGENTS[Agents<br/>4 custom agent definitions]
-    end
-    subgraph Runtime["Kiro session"]
-        TA[topic-analyst]
-        SB[spec-builder]
-        LR[literature-reviewer]
-        DM[diagram-maker]
-    end
-    subgraph State["Per-topic state"]
-        TB[topic-brief.md]
-        RS[research-spec/]
-        FW[literature-review-framework.md]
-        DG[diagrams.md]
-        LOG[session-log.md]
-    end
-    SPEC --> Runtime
-    STEER --> Runtime
-    AGENTS --> Runtime
-    TA --> TB
-    SB --> RS
-    LR --> FW
-    DM --> DG
-    TB --> SB
-    TB --> LR
-    RS --> LR
-    RS --> DM
-    Runtime --> LOG
+flowchart TD
+    A["Research idea"] --> B["Topic candidate"]
+    B --> M["Python manager: validate and commit"]
+    M --> C["Student reviews exact brief version"]
+    C --> D["Hash-bound confirmation"]
+    D --> E["Research Spec candidate and commit"]
+    E --> F["Literature candidate and commit"]
+    E --> G["Diagram candidate and commit"]
+    F --> H["Validate current planning artifacts"]
+    G --> H
 ```
 
-## Components and Interfaces
+## State model and dependencies
 
-### topic-analyst
-- **Input:** free-text topic idea (chat message).
-- **Output:** `topic-brief.md` (refined topic, scope in/out, 3–5 research questions, key terms).
-- **Gate:** student confirmation required before Stage 2.
+Each topic has `.ghostagent-state.json` schema 1: topic slug, monotonically increasing revision, `confirmed_brief` SHA256, per-stage saved input/output hashes and ordered events. Event timestamps are timezone-aware local ISO values. State has no absolute machine paths. The manager derives `session-log.md` from events; previous entries persist exactly. A process lock file persists as working data.
 
-### spec-builder
-- **Input:** confirmed `topic-brief.md`.
-- **Output:** `research-spec/requirements.md`, `research-spec/design.md`, `research-spec/tasks.md` for the student's topic, modelled on this workflow Spec.
-- **Rule:** the student's edits to these files are authoritative on re-runs.
+`topic` depends on input.md. `spec` depends on topic-brief.md and current scope confirmation. Both `literature` and `diagrams` depend on topic-brief.md plus all three Spec files. Saved input hashes and recursive dependency readiness determine freshness. A stage fingerprint binds current inputs, current stage outputs and applicable confirmation; a candidate cannot publish against a changed base.
 
-### literature-reviewer
-- **Input:** research questions from `topic-brief.md` + chapter plan from `research-spec/design.md`.
-- **Output:** `literature-review-framework.md` — themes → debate → established → gap → thesis response, plus a reading plan.
-- **Rule:** no invented citations; unknown sources are `[source needed]`.
+Direct edits are not silently committed: status marks them modified. Upstream changes propagate staleness. A brief's changed bytes revoke approval at recommit and immediately block downstream publication even before recommit. A byte-identical recommit does not force irrelevant regeneration. The next actionable stage is derived rather than stored as a second source of truth.
 
-### diagram-maker
-- **Input:** `research-spec/design.md`.
-- **Output:** `diagrams.md` with a study architecture diagram and a procedure flow diagram in Mermaid, each captioned with the Spec section it visualises.
+## Commit and failure model
 
-## Data Models
+Under an OS-level lock: recover a pending transaction; load state; verify the expected base token and dependencies; read every candidate; merge existing protected blocks; validate all candidates; construct the next state and event log; durably write a journal; atomically replace each document and the log; replace state last; remove the journal.
 
-All state is Markdown. The per-topic output layout (also in
-`.kiro/steering/structure.md`):
+Atomic replacement applies to individual files. This is a recoverable multi-file publication, not snapshot isolation for external readers. Recovery verifies all before/after hashes before proceeding and rejects conflicts with outside edits. OS locks release if a process crashes. External editors are not locked; the base token detects edits up to commit validation, but editors must not concurrently change final artifacts during publication. The manager creates no historical backup.
 
-```text
-output/<topic-slug>/
-├── topic-brief.md
-├── research-spec/
-│   ├── requirements.md
-│   ├── design.md
-│   └── tasks.md
-├── literature-review-framework.md
-├── diagrams.md
-└── session-log.md
-```
+## Student-edit protocol
 
-`<topic-slug>` is the kebab-case short form of the refined topic, chosen by
-`topic-analyst` and recorded in the Topic Brief.
+Named `student-edit:stable-id` blocks match across heading moves. Anonymous blocks match their enclosing Markdown heading. Original block contents replace candidate contents. Removed, renamed, duplicate, nested, malformed or unclosed blocks reject publication before writes. Outside-block edits are hash-visible but need agent reconciliation. Semantic brief/Spec conflicts require student input.
 
-## Correctness Properties
+## Validation boundary
 
-- **P1 — Spec primacy:** if an output and the Research Spec disagree, the Spec wins and the output is regenerated.
-- **P2 — No fabricated provenance:** every citation-shaped string in any output was either supplied by the student or is the literal marker `[source needed]`.
-- **P3 — Resumability:** given only the per-topic state folder, a fresh Kiro session can identify the current stage and continue without regenerating completed stages.
-- **P4 — Style conformance:** every output passes the rules in `.kiro/steering/academic-style.md` (structure, tone, terminology) before it is presented.
-- **P5 — Task order:** a task in `tasks.md` is only marked complete when all tasks it depends on are complete.
+The executable checks stage freshness, exact approval binding, expected headings, contiguous topic RQs, unknown RQ references, requirements coverage, task IDs/order/completed prerequisites, Mermaid fences/flowchart headers and caption presence. Citation-shaped strings generate review warnings; this heuristic cannot prove provenance. Source-needed placeholders are permitted for a framework.
 
-## Error Handling
+It cannot establish source truth, infer missing field claims, judge methodology, authenticate approval, validate full Mermaid grammar or demonstrate live Kiro agent loading. Those are distinct runtime, rendering and academic acceptance checks. Prompt compliance remains a Kiro/model behavior, not a Python guarantee.
 
-- **Vague topic** (no identifiable subject or population): `topic-analyst` asks one clarifying question instead of guessing a scope.
-- **Contradictory student edits** (e.g. a research question removed from the brief but present in the Spec): `spec-builder` flags the conflict in the Session Log and asks which version stands.
-- **Invalid Mermaid** produced by `diagram-maker`: the agent validates the block against Mermaid syntax rules in its prompt and regenerates before writing `diagrams.md`.
+## Example and acceptance
 
-## Testing Strategy
-
-- **Golden example:** `examples/sample-run/` freezes one full run; changes to the Spec, steering or agents are checked by re-running the sample topic and diffing the shape (sections, markers, diagram validity) of the outputs.
-- **Property checks:** P2 is checked by scanning outputs for citation patterns not present in student input; P5 is checked by reading `tasks.md` dependency order.
-- **Manual acceptance:** each requirement's acceptance criteria in `requirements.md` map to one stage walkthrough in `docs/USER_GUIDE.md`.
+The frozen example was assembled through manager commits; its confirmation event explicitly records simulated fixture review. It contains a complete proposed research plan, with research tasks unchecked. Real Kiro execution, renderer acceptance and demo-video accuracy remain separate acceptance items. Operational tests should cover blocked unconfirmed commits, dependency propagation, protected edits, obsolete fingerprints, interrupted publication and conflicting recovery, not merely JSON parsing.

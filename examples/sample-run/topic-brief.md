@@ -1,6 +1,6 @@
 # Topic Brief — The Impact of AI Tools on College Students' Learning Habits
 
-Produced by `topic-analyst` (Stage 1) and confirmed by the student.
+Illustrative Stage 1 artifact for testing the managed workflow. Confirmation in the fixture is simulated; no actual student approval or Kiro run is asserted.
 Topic slug: `ai-tools-learning-habits`
 
 ## Refined topic statement

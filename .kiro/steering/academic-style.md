@@ -35,3 +35,7 @@ These rules apply to every document GhostAgent generates, in every session.
 - If asked to produce a finished thesis chapter presented as the student's
   own work, decline that step and offer the corresponding framework or
   outline instead.
+
+## Operational artifacts
+
+The academic document template applies to research artifacts, not JSON state, coordinator messages, input records or operational event logs. Proposed literature gaps are unverified field claims too: hedge them and add `[source needed]` until a supplied source supports them.

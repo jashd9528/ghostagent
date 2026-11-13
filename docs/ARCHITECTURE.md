@@ -1,104 +1,85 @@
 # GhostAgent — Architecture
 
-## 1. Overview
+Kiro produces research content. A Python standard-library executable manages the lifecycle of that content; the CLI and offline UI need no server or database. An optional local HTTP bridge connects the UI to the same manager.
 
-GhostAgent is an agentic research workflow implemented as Kiro configuration:
-Specs define *what* the workflow must do, steering documents define *how* every
-output must look, and custom agents each perform one stage of the work. There is
-no separate application server: Kiro is the runtime, the Spec files are the
-program, and the Markdown outputs are the work products.
+## Components
 
-Design goals:
-
-1. **Structure before text** — no chapter drafting until requirements and design exist.
-2. **One source of truth** — the Spec under `.kiro/specs/` is the shared long-term memory for all agents and sessions.
-3. **Single-responsibility agents** — each agent can be reviewed, improved and re-run independently.
-4. **Consistency by steering, not by prompting** — style rules live in `.kiro/steering/` and apply automatically.
-5. **Verifiable progress** — every stage maps to checkable tasks in `tasks.md` and to acceptance criteria in `requirements.md`.
-
-## 2. Workflow
+| Component | Responsibility |
+| --- | --- |
+| research-coordinator | Resume, select the next stage and request scope approval |
+| Four research agents | Generate topic, Spec, literature framework and diagram candidates |
+| ghostagent.py | Init, status, confirm, commit and validate |
+| Workflow Spec | Requirements for this software, under .kiro/specs/ |
+| Per-topic Research Spec | The student's own requirements, method, chapter plan and tasks |
+| State and session log | Committed hashes, scope approval and ordered event history |
 
 ```mermaid
 flowchart TD
-    A[Student enters a research topic] --> B[topic-analyst<br/>scope + research questions]
-    B --> C[spec-builder<br/>requirements.md / design.md / tasks.md]
-    C --> D[literature-reviewer<br/>review framework by theme and gap]
-    C --> E[diagram-maker<br/>Mermaid architecture & flow diagrams]
-    D --> F[output/&lt;topic-slug&gt;/]
-    E --> F
-    F --> G{Student review}
-    G -->|revise topic or Spec| B
-    G -->|accept| H[Research plan ready for drafting]
+    A["Research idea"] --> B["Topic candidate"]
+    B --> M["Python manager: validate and commit"]
+    M --> C["Student reviews exact brief version"]
+    C --> D["Hash-bound confirmation"]
+    D --> E["Research Spec candidate and commit"]
+    E --> F["Literature candidate and commit"]
+    E --> G["Diagram candidate and commit"]
+    F --> H["Validate current planning artifacts"]
+    G --> H
 ```
 
-### Stage details
+## File-based frontend
 
-**Stage 1 — Topic analysis (`topic-analyst`)**
-Input: one free-text idea. Output: refined topic statement, scope boundaries
-(included / excluded), 3–5 candidate research questions ordered by importance,
-and key terms with short definitions. The student confirms or edits the scope
-before anything else is generated.
+`frontend/index.html`, `styles.css` and `app.js` implement a screenshot-inspired research workspace without a server. `sample-data.js` embeds sample documents, manager status and events. `export_sample.py` refreshes it only after successful manager validation. Mermaid 10.9.5 is bundled for offline SVG rendering with its license.
 
-**Stage 2 — Spec generation (`spec-builder`)**
-Input: the confirmed scope. Output: a Spec instance for this topic containing
-research requirements (EARS), a research design (method outline, chapter plan,
-data/instrument needs if any), and a task list sequenced so each task depends
-only on earlier outputs.
+Folder imports compute SHA-256 on original file bytes and mirror canonical manager fingerprint serialization, deriving current, modified, stale, missing and untracked states. These are freshness checks, not structural validation or journal recovery. The UI never invents Kiro progress or treats research task completion as planning-stage completion.
 
-**Stage 3 — Literature review framework (`literature-reviewer`)**
-Input: research questions. Output: a framework document organised as
-themes → representative debates → gaps → how this thesis addresses each gap,
-plus a reading plan (what to search, where, in what order). The framework is a
-structure with guidance notes, not fabricated citations: source slots are
-marked `[source needed]` until the student inserts verified references
-(see *Academic integrity* below).
+Markdown escapes source HTML; Mermaid uses strict mode. Browser drafts keyed by topic and brief hash do not write original files. Exports include Markdown, store-mode ZIPs with complete candidate stages and fingerprints, archival draft JSON and SVG. Offline exports can be published with the manager CLI. In connected mode, explicit UI actions publish through the bridge; there is no arbitrary command input in the frontend. Explicit generation requests invoke a fixed Kiro CLI command through the backend.
 
-**Stage 4 — Diagrams (`diagram-maker`)**
-Input: the research design. Output: Mermaid diagrams — a study architecture
-diagram (components and data flow of the planned research) and a process flow
-diagram (the research procedure step by step). Mermaid is used so diagrams are
-version-controllable text that renders in GitHub, Kiro and most editors.
+The interface follows the screenshots' dark palette, multi-agent cards and split document/diagram views. It does not implement the screenshots' unverified statistical agents. Responsive layouts collapse cards and panels on narrow screens.
 
-**Stage 5 — Review loop**
-The student reviews outputs against the acceptance criteria. Any change to the
-topic re-enters at Stage 1; any change to structure re-enters at Stage 2. The
-Spec is updated in place, so all downstream documents stay consistent.
+## Local workflow bridge
 
-## 3. Components
+`workflow_server.py` serves the existing UI and `/api/session`, `/api/projects`, `/api/snapshot` plus POST `/api/init`, `/api/copy-sample`, `/api/confirm`, `/api/commit`, `/api/validate`. It binds loopback only. Host and Origin checks, cross-site request rejection and a random process token on mutations constrain browser access. Only frontend assets are served. API input paths are fixed stage document names and output identifiers; the sample is read-only. No shell command or arbitrary file-read endpoint is exposed.
 
-| Component | Location | Role |
-| --- | --- | --- |
-| Workflow Spec | `.kiro/specs/ghostagent-research-workflow/` | Defines the workflow itself: requirements, design, tasks |
-| Product steering | `.kiro/steering/product.md` | Product definition loaded into every session |
-| Academic style steering | `.kiro/steering/academic-style.md` | Writing rules enforced on all outputs |
-| Structure steering | `.kiro/steering/structure.md` | Output locations and file naming |
-| Tech steering | `.kiro/steering/tech.md` | Format and tooling conventions |
-| Agents | `.kiro/agents/*.json` | One custom agent per workflow stage |
-| Outputs | `output/<topic-slug>/` (generated, git-ignored) | The student's actual research documents |
-| Examples | `examples/sample-run/` | A frozen sample run for reviewers |
+`frontend/workflow.js` adds the connected workflow view without breaking direct-file preview. Snapshots load formal files, status, events and validation under the manager lock. Writes reuse manager functions, complete-stage validation, protected-block preservation and journal recovery. Candidate bodies are staged in a temporary directory and removed after the operation. The server does not bypass the brief confirmation gate or inherit fixture approval on sample copy.
 
-## 4. Data model
+The frontend retains stage fingerprints in browser drafts across refreshes and rejects silent rebasing. An explicit reconciliation flow displays current formal documents beside preserved candidates and requires acknowledgement before using the newly read base. Confirmation displays the formal brief and posts the reviewed hash only after an explicit checkbox. The manager detects edits between review and submission. Other pending stage drafts remain pinned after an upstream commit.
 
-The workflow manipulates only Markdown documents:
+The bridge is a local single-user interface, not a public authenticated service. It can invoke the configured Kiro CLI for candidate generation; provenance review and academic acceptance remain separate. API validation returns incomplete errors as data rather than falsely reporting readiness.
 
-- **Topic brief** — `topic-brief.md`: refined topic, scope, research questions, key terms.
-- **Research Spec** — `research-spec/`: `requirements.md`, `design.md`, `tasks.md` for the student's own topic (generated by `spec-builder`, modelled on the workflow Spec).
-- **Literature review framework** — `literature-review-framework.md`.
-- **Diagrams** — `diagrams.md`: Mermaid blocks with captions.
-- **Session log** — `session-log.md`: what was generated, when, and what the student changed, so work can resume in a later session.
+## Kiro candidate executor
 
-## 5. Academic integrity rules
+`kiro_generation.py` implements persistent asynchronous jobs. GET `/api/kiro/runtime`, `/api/kiro/jobs?id=...`, `/api/kiro/job?job=...` expose readiness, history and bounded logs. Token-protected POST `/api/kiro/generate` and `/api/kiro/cancel` start and stop jobs. CLI selection is a server startup setting, never a browser-provided shell command. Native executable and explicit WSL distribution modes are supported, with subprocess timeouts and fixed argv (`shell=False`).
 
-These rules are enforced by `.kiro/steering/academic-style.md` and are part of
-the design, not an afterthought:
+Under the manager lock, generation verifies stage dependencies, approval and the browser's current fingerprint, then captures a formal snapshot. It releases the lock before calling Kiro. Each job runs with a dedicated candidate-only agent (empty tools/resources/MCP) in its own runtime directory. Snapshot and requirements are piped through stdin; output must contain exactly one bounded JSON envelope. The selected role's output schema is enforced with the manager's structural checks and protected-block handling. Interactive agent definitions are unchanged and retain their existing CLI workflow semantics.
 
-1. GhostAgent produces **structure, plans and frameworks** — the student writes the thesis.
-2. **No fabricated citations.** Unknown sources are marked `[source needed]`; agents never invent authors, titles, years or DOIs.
-3. Every generated claim about a field is phrased as guidance to verify, not as a sourced fact.
-4. The student remains the author of record for all submitted academic work.
+`frontend/kiro.js` provides generation requests, runtime diagnosis, job polling, real logs and candidate review. Successful results retain their original fingerprint; a changed base flags the result stale. Candidate review uses the existing commit modal without rebasing. Publishing still requires the explicit manager-backed commit and exact-scope confirmation. Failure output is never presented as a completed stage. Authentication stays in the Kiro environment; the bridge does not collect keys. The configured key is redacted from captured logs.
 
-## 6. Extensibility
+Jobs persist as working data under `output/.kiro-jobs/`; an in-progress job becomes interrupted on restart. One active job per topic is permitted. Stdout and stderr have size bounds, generation has a deadline, and cancellation terminates the launched process tree on Windows. Cancellation of a WSL client cannot guarantee immediate termination of every Linux descendant; only tool-less candidate generation is used. No OS sandbox is claimed, and global Kiro hooks/policies still apply. CLI availability checks are not successful AI-generation evidence.
 
-- Add a stage = add one agent JSON + one section in the Spec's `tasks.md`.
-- Change the academic style = edit one steering file; every agent picks it up.
-- Support a new discipline = add a steering file with field-specific terminology and structure, scoped to that workspace.
+## State model and dependencies
+
+Each topic has `.ghostagent-state.json` schema 1: topic slug, monotonically increasing revision, `confirmed_brief` SHA256, per-stage saved input/output hashes and ordered events. Event timestamps are timezone-aware local ISO values. State has no absolute machine paths. The manager derives `session-log.md` from events; previous entries persist exactly. A process lock file persists as working data.
+
+`topic` depends on input.md. `spec` depends on topic-brief.md and current scope confirmation. Both `literature` and `diagrams` depend on topic-brief.md plus all three Spec files. Saved input hashes and recursive dependency readiness determine freshness. A stage fingerprint binds current inputs, current stage outputs and applicable confirmation; a candidate cannot publish against a changed base.
+
+Direct edits are not silently committed: status marks them modified. Upstream changes propagate staleness. A brief's changed bytes revoke approval at recommit and immediately block downstream publication even before recommit. A byte-identical recommit does not force irrelevant regeneration. The next actionable stage is derived rather than stored as a second source of truth.
+
+## Commit and failure model
+
+Under an OS-level lock: recover a pending transaction; load state; verify the expected base token and dependencies; read every candidate; merge existing protected blocks; validate all candidates; construct the next state and event log; durably write a journal; atomically replace each document and the log; replace state last; remove the journal.
+
+Atomic replacement applies to individual files. This is a recoverable multi-file publication, not snapshot isolation for external readers. Recovery verifies all before/after hashes before proceeding and rejects conflicts with outside edits. OS locks release if a process crashes. External editors are not locked; the base token detects edits up to commit validation, but editors must not concurrently change final artifacts during publication. The manager creates no historical backup.
+
+## Student-edit protocol
+
+Named `student-edit:stable-id` blocks match across heading moves. Anonymous blocks match their enclosing Markdown heading. Original block contents replace candidate contents. Removed, renamed, duplicate, nested, malformed or unclosed blocks reject publication before writes. Outside-block edits are hash-visible but need agent reconciliation. Semantic brief/Spec conflicts require student input.
+
+## Validation boundary
+
+The executable checks stage freshness, exact approval binding, expected headings, contiguous topic RQs, unknown RQ references, requirements coverage, task IDs/order/completed prerequisites, Mermaid fences/flowchart headers and caption presence. Citation-shaped strings generate review warnings; this heuristic cannot prove provenance. Source-needed placeholders are permitted for a framework.
+
+It cannot establish source truth, infer missing field claims, judge methodology, authenticate approval, validate full Mermaid grammar or demonstrate live Kiro agent loading. Those are distinct runtime, rendering and academic acceptance checks. Prompt compliance remains a Kiro/model behavior, not a Python guarantee.
+
+## Example and acceptance
+
+The frozen example was assembled through manager commits; its confirmation event explicitly records simulated fixture review. It contains a complete proposed research plan, with research tasks unchecked. Real Kiro execution, renderer acceptance and demo-video accuracy remain separate acceptance items. Operational tests should cover blocked unconfirmed commits, dependency propagation, protected edits, obsolete fingerprints, interrupted publication and conflicting recovery, not merely JSON parsing.

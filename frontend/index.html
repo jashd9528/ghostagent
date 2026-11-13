@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1021"><title>GhostAgent · Research Workspace</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<div class="app-shell">
+<aside class="sidebar">
+<a class="brand" href="#dashboard" aria-label="GhostAgent 首页"><svg class="ghost" viewBox="0 0 40 44" fill="none"><path d="M5 37V19a15 15 0 0 1 30 0v18l-6-4-5 5-5-5-6 5-8-1Z" fill="url(#g)"/><circle cx="15" cy="19" r="2.5" fill="#10152b"/><circle cx="26" cy="19" r="2.5" fill="#10152b"/><defs><linearGradient id="g" x2="40" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#79e3ef"/><stop offset="1" stop-color="#9b76ff"/></linearGradient></defs></svg><span>Ghost<span class="gradient">Agent</span><small>RESEARCH WORKSPACE</small></span></a>
+<div class="workspace-picker"><span class="workspace-icon">G</span><div><strong>我的研究空间</strong><small>Personal workspace</small></div><span class="tiny">⌄</span></div>
+<div class="nav-label">WORKSPACE</div>
+<nav id="nav" aria-label="主导航"><a href="#dashboard" data-page="dashboard"><i data-icon="grid"></i>协作工作台<span class="nav-key">01</span></a><a href="#spec" data-page="spec"><i data-icon="file"></i>研究计划<span class="nav-key">02</span></a><a href="#literature" data-page="literature"><i data-icon="book"></i>文献与图表<span class="nav-key">03</span></a><a href="#context" data-page="context"><i data-icon="network"></i>项目上下文<span class="nav-key">04</span></a><a href="#workflow" data-page="workflow"><i data-icon="refresh"></i>工作流<span class="nav-key">05</span></a></nav>
+<div class="nav-label agents-label">YOUR AGENTS <span>4</span></div><div class="agent-roster"><span><b class="dot cyan"></b>Topic Analyst<small>选题分析</small></span><span><b class="dot purple"></b>Spec Builder<small>研究设计</small></span><span><b class="dot orange"></b>Literature Reviewer<small>文献框架</small></span><span><b class="dot green"></b>Diagram Maker<small>架构图表</small></span></div>
+<div class="sidebar-bottom"><div class="local-note"><i data-icon="shield"></i><div>本地优先<small>草稿保存在当前浏览器</small></div></div><div class="kiro-label"><span class="kiro-mark">✧</span>Built for <strong>Kiro</strong><span class="tiny">WORKFLOW</span></div></div>
+</aside>
+<div class="main-shell"><header class="topbar"><div class="breadcrumbs">Workspace <span>/</span> <strong id="breadcrumb">Collaboration Hub</strong></div><div class="top-actions"><span class="connection"><b class="dot green"></b>本地研究空间</span><button class="icon-button" id="help" aria-label="查看使用说明" title="使用说明"><i data-icon="help"></i></button><span class="avatar">R</span></div></header>
+<main id="main" tabindex="-1"></main><footer class="footer"><span><b class="dot purple"></b> GHOSTAGENT <span class="footer-divider">/</span> Think clearly. Research better.</span><span id="footer-state">研究规划工具 · 非已完成的学术研究</span></footer></div>
+</div>
+<input type="file" id="folder-input" webkitdirectory multiple hidden><input type="file" id="files-input" accept=".md,.json" multiple hidden>
+<dialog id="modal"><div class="modal-heading"><h2 id="modal-title"></h2><button class="icon-button" id="modal-close" aria-label="关闭弹窗">×</button></div><div id="modal-body"></div></dialog><div id="toast" role="status" aria-live="polite"></div>
+<script src="sample-data.js"></script><script src="vendor/mermaid.min.js"></script><script src="app.js"></script><script src="workflow.js"></script><script src="kiro.js"></script>
+</body></html>

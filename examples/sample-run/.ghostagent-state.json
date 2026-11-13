@@ -1,0 +1,86 @@
+{
+  "confirmed_brief": "0e31dd2212d94f0a24104dedf31a762d142103da24ed05a51b8bd2cde7b89060",
+  "events": [
+    {
+      "action": "init",
+      "detail": "Recorded the student's research idea; no research content generated.",
+      "revision": 1,
+      "time": "2026-11-12T23:58:55-08:00"
+    },
+    {
+      "action": "commit:topic",
+      "detail": "Build illustrative fixture, not a live Kiro run.",
+      "revision": 2,
+      "time": "2026-11-12T23:58:55-08:00"
+    },
+    {
+      "action": "fixture-confirmation",
+      "detail": "SIMULATED REVIEW for the frozen fixture only. No actual student approval is asserted.",
+      "revision": 3,
+      "time": "2026-11-12T23:58:55-08:00"
+    },
+    {
+      "action": "commit:spec",
+      "detail": "Build illustrative fixture, not a live Kiro run.",
+      "revision": 4,
+      "time": "2026-11-12T23:58:55-08:00"
+    },
+    {
+      "action": "commit:literature",
+      "detail": "Build illustrative fixture, not a live Kiro run.",
+      "revision": 5,
+      "time": "2026-11-12T23:58:55-08:00"
+    },
+    {
+      "action": "commit:diagrams",
+      "detail": "Build illustrative fixture, not a live Kiro run.",
+      "revision": 6,
+      "time": "2026-11-12T23:58:55-08:00"
+    }
+  ],
+  "revision": 6,
+  "schema": 1,
+  "stages": {
+    "diagrams": {
+      "inputs": {
+        "research-spec/design.md": "4a5bcd9637388cf6138077bddca395326e65605ddc55b7583a68806b15c2ba9d",
+        "research-spec/requirements.md": "f478458ef5900a45e50eae007302510832518e01733c5b5951f1f38ee3c9e34b",
+        "research-spec/tasks.md": "2e2565740921607ac4d3561acf082af8574d9db9cb82f98138963e582e900947",
+        "topic-brief.md": "0e31dd2212d94f0a24104dedf31a762d142103da24ed05a51b8bd2cde7b89060"
+      },
+      "outputs": {
+        "diagrams.md": "54efa5d6b89a2428330d3fd1cad63c539f32a07e6dd0337beceec5e646120736"
+      }
+    },
+    "literature": {
+      "inputs": {
+        "research-spec/design.md": "4a5bcd9637388cf6138077bddca395326e65605ddc55b7583a68806b15c2ba9d",
+        "research-spec/requirements.md": "f478458ef5900a45e50eae007302510832518e01733c5b5951f1f38ee3c9e34b",
+        "research-spec/tasks.md": "2e2565740921607ac4d3561acf082af8574d9db9cb82f98138963e582e900947",
+        "topic-brief.md": "0e31dd2212d94f0a24104dedf31a762d142103da24ed05a51b8bd2cde7b89060"
+      },
+      "outputs": {
+        "literature-review-framework.md": "4668533b1d11a94a022576f923aba92dcbe2b6ea315f6644a4383002d1847559"
+      }
+    },
+    "spec": {
+      "inputs": {
+        "topic-brief.md": "0e31dd2212d94f0a24104dedf31a762d142103da24ed05a51b8bd2cde7b89060"
+      },
+      "outputs": {
+        "research-spec/design.md": "4a5bcd9637388cf6138077bddca395326e65605ddc55b7583a68806b15c2ba9d",
+        "research-spec/requirements.md": "f478458ef5900a45e50eae007302510832518e01733c5b5951f1f38ee3c9e34b",
+        "research-spec/tasks.md": "2e2565740921607ac4d3561acf082af8574d9db9cb82f98138963e582e900947"
+      }
+    },
+    "topic": {
+      "inputs": {
+        "input.md": "9bbe7b362faf65df16d3691bc004244e0ac95e8f3d6cd5ab16aa6508f9ae5a08"
+      },
+      "outputs": {
+        "topic-brief.md": "0e31dd2212d94f0a24104dedf31a762d142103da24ed05a51b8bd2cde7b89060"
+      }
+    }
+  },
+  "topic": "ai-tools-learning-habits"
+}

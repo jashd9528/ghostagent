@@ -1,42 +1,38 @@
 # Devpost Submission Texts — GhostAgent
 
-Copy-paste texts for the Kiroween submission form. Replace every
-`[bracketed placeholder]` with your real information before submitting.
+Draft external-facing project description. Verify platform eligibility and historical facts before submission. This implementation has not been submitted or published by the workflow manager.
 
-## Testing instructions or credentials
+## Testing instructions
 
-```
-No credentials required.
-1. Clone the public GitHub repo and open the project folder in Kiro (free IDE from kiro.dev). All configuration lives in /.kiro at the repo root.
-2. In the Specs panel, open ghostagent-research-workflow to see requirements.md, design.md and tasks.md; the Steering panel shows product, academic-style, structure and tech.
-3. To run the workflow: start a Kiro chat in this workspace and enter a sample research topic, e.g. "The impact of AI tools on college students' learning habits". The topic-analyst agent produces a topic brief; after you confirm the scope, spec-builder generates a research Spec, literature-reviewer builds the literature review framework, and diagram-maker produces Mermaid diagrams.
-4. A complete frozen sample run (input + all outputs) is in examples/sample-run/ if you prefer to inspect results without running anything.
-5. Demo video: https://youtu.be/F3EKEneyoqA
-```
+```text
+Install Python 3.10+ and open the repository in Kiro. Kiro's authentication and service requirements apply. Agent JSON targets IDE 1.0 / CLI V3.
 
-## How the project meets the main technology requirement (uses Kiro)
+For a local structural check without AI generation, run:
+python ghostagent.py --topic examples/sample-run validate
 
-```
-GhostAgent is built entirely with Kiro.
+For live generation, select research-coordinator in Kiro and provide a research idea. Review the generated scope and explicitly confirm it. The coordinator uses the local manager to publish a Research Spec, literature review framework and diagrams. See docs/USER_GUIDE.md for exact candidate/commit commands and manual operation.
 
-- Kiro Specs (spec-driven development): The entire research workflow is defined as a Spec in .kiro/specs/ghostagent-research-workflow — requirements.md defines the workflow stages in EARS format with acceptance criteria, design.md defines the agent architecture, data flow and correctness properties, and tasks.md breaks the build into an ordered, checkable task list.
-- Kiro Steering: Steering documents in .kiro/steering (product, academic-style, structure, tech) define the product, the academic writing rules — including a hard no-fabricated-citations rule — the output layout and the technical conventions, and are applied to every generated output in every session.
-- Kiro custom agents: Four agents in .kiro/agents (topic-analyst, spec-builder, literature-reviewer, diagram-maker) each perform one stage of the research workflow and hand work to each other through the shared Spec files, which act as long-term project memory across sessions.
-- Kiro IDE: The project was developed and runs in Kiro, and all configuration lives in the /.kiro directory at the repository root, making the setup reproducible and extensible.
+The frozen sample includes the input, all research artifacts, state and session log. Its approval is explicitly simulated fixture data, not a real student's review or evidence of a Kiro session.
+
+Existing project demo link: https://youtu.be/F3EKEneyoqA
+The video has not been checked against the updated implementation.
 ```
 
-## Disclosure of pre-existing code or work
+## Technology description
 
-```
-GhostAgent was created new for this hackathon. No pre-existing project code was reused. The repository contains Kiro configuration (Specs, steering documents and custom agent definitions), documentation and a sample run, all authored for this project during the hackathon. The only external component is Kiro itself. Demo video narration and subtitles were produced with AI tools during the hackathon.
-```
+GhostAgent uses Kiro Specs to define the workflow, steering to define research and collaboration rules, and a coordinator plus four custom research agents to generate candidates. A Python standard-library manager enforces hash-bound scope approval, stage dependencies, stale-output detection, protected student edits, event logging and interrupted-publication recovery. Kiro remains responsible for AI research planning; the local manager requires no third-party Python packages or database. An optional loopback-only Python bridge connects the visual workspace to formal workflow operations.
 
-## Repository checklist (verify before submitting)
+The file-based visual workspace in `frontend/index.html` provides a screenshot-inspired agent dashboard, Spec editing, dependency-aware research-task drafts, literature navigation, local Mermaid rendering and SVG/candidate exports. It embeds a manager-validated sample and can inspect a selected topic folder. Direct-file preview keeps edits as browser drafts. Starting `workflow_server.py` enables opening/creating local topics, explicit hash-bound scope confirmation, complete-stage submission and validation through the same manager. Draft editing itself never publishes files or executes Kiro. A separate explicit Kiro generation action launches a tool-less, candidate-only CLI session, displays real logs and preserves its original base fingerprint. Generated output still requires review and formal submission; runtime CLI and authentication requirements apply. The frozen sample is read-only; copies do not inherit simulated approval. Run `python -B frontend/export_sample.py` to refresh the embedded sample after approved changes.
 
-- [ ] Repository is **public** on GitHub (not GitLab / Bitbucket).
-- [ ] `LICENSE` (MIT) is in the root and the license shows in the About section.
-- [ ] `/.kiro` is at the repository root and is **not** listed in `.gitignore`.
-- [ ] README's demo link points to the real demo video.
-- [ ] Submitter country of residence is your actual country.
-- [ ] The selected Category matches the project, and the "Best Student
-      Project" sponsor prize (if entered) names the same category.
+## Development-history disclosure
+
+The original repository contained Kiro configuration, documentation and partial sample artifacts. This revision adds executable Python lifecycle management, a coordinator, updated stage protocols and a complete illustrative fixture. Confirm the original creation dates, hackathon eligibility and any required AI-use disclosure against the actual project history before submitting. No claim is made here that all work was created during a particular event.
+
+## Submission checklist
+
+- [ ] Confirm GitHub repository visibility and MIT license display.
+- [ ] Confirm .kiro and the executable manager are included in the published repository.
+- [ ] Demonstrate live execution in the stated Kiro version.
+- [ ] Render the Mermaid diagrams and review all sources and limitations.
+- [ ] Verify the demo describes this version.
+- [ ] Check residence, category, dates and other eligibility against actual facts.

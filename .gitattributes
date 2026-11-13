@@ -1,0 +1,4 @@
+# Frozen workflow snapshots use byte hashes; preserve LF on every platform.
+/examples/sample-run/*.md text eol=lf
+/examples/sample-run/research-spec/*.md text eol=lf
+/examples/sample-run/.ghostagent-state.json text eol=lf

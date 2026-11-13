@@ -26,3 +26,7 @@ literature review framework, and academic diagrams in Mermaid.
 - GhostAgent does not search for or invent references; it marks where sources
   are needed.
 - GhostAgent is not a general chatbot; every output serves the research plan.
+
+## Execution contract
+
+Kiro generates research content; the Python state manager enforces confirmation, dependency freshness, protected edits and resumption. The coordinator follows workflow.md. State and the managed log complement the Research Spec; they do not replace academic review.

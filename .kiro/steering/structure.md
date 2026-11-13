@@ -2,20 +2,16 @@
 
 ## Repository layout
 
-- `.kiro/` lives at the repository root and is never git-ignored.
-- `.kiro/specs/ghostagent-research-workflow/` holds the workflow Spec.
-- `.kiro/steering/` holds product, style, structure and tech rules.
-- `.kiro/agents/` holds one JSON file per custom agent, named after the agent.
-- `docs/` holds human-facing documentation. `examples/` holds frozen sample runs.
+- `.kiro/specs/ghostagent-research-workflow/` defines the software workflow, not the student's research.
+- `.kiro/steering/` contains shared rules, including the managed workflow protocol.
+- `.kiro/agents/` contains a coordinator and four research-stage definitions.
+- `ghostagent.py` is the executable state manager. `docs/` contains usage and architecture. `examples/sample-run/` is an illustrative complete snapshot, not evidence of a live Kiro run.
 
-## Generated output layout (per topic)
-
-All generated research documents for one topic go under
-`output/<topic-slug>/`, where `<topic-slug>` is the kebab-case short form of
-the refined topic chosen by `topic-analyst` and recorded in the topic brief:
+## Per-topic layout
 
 ```text
 output/<topic-slug>/
+├── input.md
 ├── topic-brief.md
 ├── research-spec/
 │   ├── requirements.md
@@ -23,12 +19,10 @@ output/<topic-slug>/
 │   └── tasks.md
 ├── literature-review-framework.md
 ├── diagrams.md
-└── session-log.md
+├── session-log.md
+├── .ghostagent-state.json
+├── .ghostagent.lock
+└── .candidates/<stage>/        # candidate documents, same relative layout
 ```
 
-## Naming
-
-- File names are kebab-case Markdown (`.md`); diagrams live inside
-  `diagrams.md` as Mermaid blocks, not as image files.
-- One topic per output folder. Never mix two topics in one folder.
-- The session log is append-only: new entries go at the end with an ISO date.
+`.ghostagent-pending.json` exists only during a recoverable transaction. One topic per folder; use a stable kebab-case slug. Do not rename the topic while agents are working. The generated `output/` directory is ignored by Git. Preserve explicitly frozen examples under `examples/`. Session history is append-only in the state; the manager materializes the corresponding Markdown log. Candidates are working data and are not evidence of stage completion.

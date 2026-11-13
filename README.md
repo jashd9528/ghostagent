@@ -1,131 +1,115 @@
 # GhostAgent 👻
 
-**An intelligent research assistant built with Kiro — turn a vague thesis idea into a clear, structured research plan.**
+Turn a thesis idea into a scoped, reviewable research plan using Kiro agents and a dependency-free Python workflow manager.
 
-GhostAgent is an agentic research workflow that runs inside [Kiro](https://kiro.dev). A student enters one initial research topic, and GhostAgent structures the entire early stage of a graduation thesis: it generates a complete Spec (Requirements → Design → Tasks), builds a literature review framework, produces academic diagrams in Mermaid, and coordinates multiple specialised agents that share one long-term project context.
+GhostAgent generates a topic brief, a per-topic Research Spec, a thematic literature review framework and Mermaid research diagrams. Kiro supplies the research reasoning; `ghostagent.py` enforces scope confirmation, tracks content dependencies and publishes protected candidate documents. It produces plans, not a finished thesis or verified scholarship.
 
-> This is not just another chatbot. It's a true **Agentic Research Workflow**.
+## Visual research workspace
 
----
+Open `frontend/index.html` directly for the screenshot-inspired, dark research workspace: four agent cards, Requirements / Design / Tasks views, dependency-aware task drafts, literature outline, local Mermaid rendering and project history. The interface uses Chinese navigation and English research labels and adapts to narrow screens.
 
-## The Problem
+For real workflow operations, run `python -B workflow_server.py` from the repository root and open the workspace address printed by the launcher. The **Workflow** page opens existing `output/<slug>` topics, creates new ones, reviews and confirms the exact committed brief, submits full-stage candidates, refreshes status and runs validation. The built-in sample is read-only; copying it seeds only a topic and does not inherit simulated approval. The Kiro generation panel launches a candidate-only Kiro CLI session; review the generated documents before formal submission.
 
-When students work on a graduation thesis, the hardest part is rarely writing the main text. It is:
+Opening the HTML directly retains offline draft/import/export mode. In connected mode, edits remain browser drafts until explicit stage submission. Candidate fingerprints remain pinned across refreshes; stale candidates require side-by-side reconciliation. Manager validation, dependency checks, protected student-edit blocks, locks and recovery are reused for formal writes. Source warnings are displayed, not treated as verified research.
 
-- turning a vague idea into a clear research structure and research questions;
-- organising a literature review before knowing the field's structure;
-- drawing academic architecture / flow diagrams by hand;
-- keeping every output consistent while the topic evolves over weeks.
+Refresh the embedded sample after approved sample changes with `python -B frontend/export_sample.py`. The exporter validates the sample before writing. Mermaid 10.9.5 is bundled under `frontend/vendor/` with its upstream license for offline rendering. This is an interpretation of the demo screenshots, not a pixel-identical reproduction or an implementation of their statistical analysis displays.
 
-General-purpose AI chatbots return one paragraph at a time. They do not plan the research process, they do not keep a persistent project structure, and their output format drifts from session to session.
+### Kiro generation from the workspace
 
-## What GhostAgent Does
+Install a Kiro CLI version supporting `chat --v3 --no-interactive --agent` and configure its own headless authentication (`KIRO_API_KEY` in the server environment where required). Credentials are not entered in the browser or stored in this repository. Click **Re-detect**, generate one stage, inspect live logs, then **Review candidate** and submit. Generation never implies scope approval or source verification.
 
-| Step | Input | Output |
-| --- | --- | --- |
-| 1. Topic analysis | One sentence research idea | Refined topic, scope, candidate research questions |
-| 2. Spec generation | Refined topic | A complete Spec: `requirements.md`, `design.md`, `tasks.md` |
-| 3. Literature review | Research questions | A structured literature review framework (themes, gaps, reading plan) |
-| 4. Diagrams | Research design | Academic architecture / flow diagrams in Mermaid |
-| 5. Task execution | `tasks.md` | Step-by-step research work products, tracked against the Spec |
+The launcher detects `kiro-cli` on PATH or accepts `--kiro-executable <executable>`. On Windows, explicitly select an installed Linux CLI with `--kiro-wsl Ubuntu-24.04` and optionally its Linux executable path. The WSL environment must have its own required credentials. `--generation-timeout` sets a 10–1800 second limit (default 600). An editor-only installation is insufficient.
 
-All steps are performed by specialised agents working from the same Spec and the same steering documents, so terminology, structure and academic style stay consistent across the whole project.
+Jobs persist under `output/.kiro-jobs/`, retain the generation-time fingerprint, and support cancellation, polling, restart interruption detection and stale candidate rejection. A dedicated generated agent has no built-in tools or MCP servers; it receives a fixed formal snapshot via stdin and returns a bounded JSON candidate envelope. It is not an OS sandbox; locally configured Kiro hooks and global policies still apply. No trust-all-tools flag is passed. Raw model output and research context are local job data; do not publish the output directory.
 
-## How It Is Built with Kiro
+## Requirements
 
-GhostAgent is built entirely with Kiro, and all of its configuration lives in the [`.kiro`](.kiro) directory at the repository root — reproducible and extensible.
+- Python 3.10 or newer. No third-party Python packages are needed.
+- Kiro for AI generation, with its own authentication and service requirements.
+- Agent JSON targets Kiro IDE 1.0 / CLI V3 tool tags (`read`, `write`, `shell`). Older installations may need migration. Actual Kiro loading is not established by a local Python check.
 
-### 1. Spec-driven development (Kiro Specs)
+The optional loopback-only workflow bridge uses Python standard-library HTTP; no database or API key is required. The manager also works independently of Kiro if you supply your own candidate documents.
 
-The entire research workflow is defined as a Kiro Spec in [`.kiro/specs/ghostagent-research-workflow/`](.kiro/specs/ghostagent-research-workflow/):
+## Quick start in Kiro
 
-- **`requirements.md`** — research goals and user stories in EARS format, with acceptance criteria for every workflow stage.
-- **`design.md`** — agent architecture, data flow, output document formats, and Mermaid diagrams of the workflow itself.
-- **`tasks.md`** — the workflow broken into ordered, checkable implementation tasks that agents execute one by one.
+1. Open this repository in Kiro.
+2. Select the `research-coordinator` custom agent and describe your research idea. If your Kiro surface does not support agent delegation, the coordinator follows stage prompts sequentially in the same session.
+3. Review the generated topic brief. Explicitly approve its current scope before downstream work starts.
+4. The coordinator commits the Research Spec, review framework and diagrams through the manager, then reports validation and any limitations.
+5. In a later session, name the topic and ask to continue. The coordinator reads persisted status instead of regenerating completed stages.
 
-### 2. Steering documents (Kiro Steering)
+Five definitions live in `.kiro/agents/`: the coordinator, `topic-analyst`, `spec-builder`, `literature-reviewer`, and `diagram-maker`. Every role follows `.kiro/steering/workflow.md`.
 
-[`.kiro/steering/`](.kiro/steering/) contains the persistent rules every agent follows:
+## Run the manager directly
 
-- **`product.md`** — what GhostAgent is, who it serves, and its core features.
-- **`academic-style.md`** — academic writing rules: structure, tone, terminology, citation discipline.
-- **`structure.md`** — where every output file goes and how it is named.
-- **`tech.md`** — the technical conventions: Markdown + Mermaid only, no external services required.
+Run commands from the repository root:
 
-### 3. Multi-agent collaboration (Kiro custom agents)
-
-Four custom agents are defined in [`.kiro/agents/`](.kiro/agents/), each with a single responsibility:
-
-| Agent | Responsibility |
-| --- | --- |
-| `topic-analyst` | Refines a raw idea into a scoped topic and research questions |
-| `spec-builder` | Generates and maintains the Spec (requirements / design / tasks) |
-| `literature-reviewer` | Builds the literature review framework organised by theme and gap |
-| `diagram-maker` | Produces Mermaid architecture and flow diagrams for the research design |
-
-Agents hand work to each other through the shared Spec files, which act as the project's long-term memory: any session can resume exactly where the last one stopped.
-
-## Project Structure
-
-```text
-ghostagent/
-├── .kiro/                              # Kiro configuration (required, at repo root)
-│   ├── specs/
-│   │   └── ghostagent-research-workflow/
-│   │       ├── requirements.md         # Workflow requirements (EARS)
-│   │       ├── design.md               # Architecture, data flow, output formats
-│   │       └── tasks.md                # Ordered, checkable task list
-│   ├── steering/
-│   │   ├── product.md                  # Product definition
-│   │   ├── academic-style.md           # Academic writing rules
-│   │   ├── structure.md                # Output file layout and naming
-│   │   └── tech.md                     # Technical conventions
-│   └── agents/
-│       ├── topic-analyst.json
-│       ├── spec-builder.json
-│       ├── literature-reviewer.json
-│       └── diagram-maker.json
-├── docs/
-│   ├── ARCHITECTURE.md                 # Detailed architecture and workflow docs
-│   └── USER_GUIDE.md                   # Step-by-step guide with examples
-├── examples/
-│   └── sample-run/                     # One complete sample run (input + outputs)
-├── DEVPOST.md                          # Hackathon submission texts
-├── LICENSE                             # MIT
-└── README.md
+```sh
+python ghostagent.py --topic output/my-topic init --idea "How do AI tools relate to undergraduate learning habits?"
+python ghostagent.py --topic output/my-topic --json status
 ```
 
-## Getting Started
+Generate a topic candidate at `output/my-topic/.candidates/topic/topic-brief.md`. Capture `stages.topic.based_on` from status before generation, then submit it:
 
-**Requirements:** [Kiro IDE](https://kiro.dev) (free). No other accounts, API keys or services are required.
+```sh
+python ghostagent.py --topic output/my-topic commit topic --source output/my-topic/.candidates/topic --based-on <captured-token> --reason "Initial scoped plan"
+```
 
-1. Clone this repository.
-2. Open the project folder in Kiro. Kiro loads `.kiro/steering/` automatically, and the Spec appears in the Specs panel.
-3. Start a chat with the `spec-builder` agent (or any Kiro chat in this workspace) and enter a research topic, for example:
+After the student explicitly reviews and approves that version, use its `brief_hash`:
 
-   > *The impact of AI tools on college students' learning habits*
+```sh
+python ghostagent.py --topic output/my-topic confirm --hash <reviewed-brief-sha256>
+```
 
-4. GhostAgent runs the workflow: topic analysis → Spec generation → literature review framework → diagrams. Outputs are written to an `output/<topic-slug>/` folder as described in `.kiro/steering/structure.md`.
-5. Review each output, adjust the topic or the Spec, and re-run any single step — the Spec keeps the whole project consistent.
+For `spec`, `literature` and `diagrams`, use the same candidate/commit protocol and the corresponding stage token. A spec candidate contains all three `research-spec/` documents. Tokens above are placeholders: copy actual values from your topic's status. In a shell replace angle-bracket placeholders before executing.
 
-A complete worked example is in [`examples/sample-run/`](examples/sample-run/), and the full walkthrough is in [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md).
+```sh
+python ghostagent.py --topic output/my-topic validate
+python ghostagent.py --topic examples/sample-run validate
+```
+
+`status` returns the next stage and `ready`, `missing`, `untracked`, `modified` or `stale` states. Direct edits are detected. Brief edits require recommit and renewed approval; Spec edits stale both downstream artifacts. Unrelated ready stages are retained. Completion means the planning artifacts are current, not that the student's research tasks are finished.
+
+## Student edit protection
+
+Use a stable named block inside any generated research document:
+
+```markdown
+<!-- student-edit:method-decisions -->
+My supervisor's method decisions belong here.
+<!-- /student-edit -->
+```
+
+The manager merges original protected contents into a candidate. Missing, renamed, nested or ambiguous blocks reject the entire stage. Anonymous legacy blocks are supported by their enclosing heading. Edits outside protected blocks must be reconciled by the agent and are not automatically merged.
+
+## Project structure
+
+```text
+ghostagent.py                 # executable state manager, Python standard library
+.kiro/agents/                 # coordinator + four research roles
+.kiro/steering/               # product, style, layout, technology, workflow protocol
+.kiro/specs/ghostagent-research-workflow/  # specification of this software
+docs/                        # architecture and full operating guide
+examples/sample-run/          # complete illustrative research-planning snapshot
+output/<topic-slug>/           # generated research artifacts, state and candidate data (ignored)
+```
+
+The sample contains input, all seven research/log artifacts and machine state. Its scope confirmation is explicitly simulated for fixture construction. It is not evidence of a real student review or an executed Kiro session. Repository attributes preserve LF endings for this byte-hashed snapshot, including Windows checkouts. The manager creates `.ghostagent.lock` as local runtime data; do not include that lock file in source commits.
+
+## Validation and limits
+
+The manager checks hashes, review binding, stage dependencies, protected blocks, required headings, RQ references, task order, and basic Mermaid fences/headers. It serializes its own processes with an OS lock and uses a recoverable write-ahead journal. It does not authenticate the person approving a scope, assess academic truth, validate every Mermaid construct or perform source searches. A `confirm` command records the caller's assertion of student approval.
+
+Use a real Mermaid renderer for rendering acceptance, a real Kiro session for runtime acceptance and the supervisor for research feasibility and ethics. Source-needed placeholders are expected in a planning framework and are not verified citations.
+
+See [User guide](docs/USER_GUIDE.md), [Architecture](docs/ARCHITECTURE.md) and the workflow acceptance checklist for details.
 
 ## Demo
 
-- Demo video: https://youtu.be/F3EKEneyoqA
-- The video shows: the problem (0:00), Spec generation (0:10), literature review framework and diagrams (0:20), multi-agent collaboration (0:30), the `.kiro` configuration (0:40), and the closing summary (0:50).
+Existing project demo link: https://youtu.be/F3EKEneyoqA
 
-## Why a Spec for Research?
-
-A thesis is a long, structured engineering-like process, but students usually run it from scattered notes. Spec-driven development fixes exactly that:
-
-- **Requirements first** — the research questions are agreed before any writing starts.
-- **Design before drafting** — the structure of the review and the study exists on paper before chapters are written.
-- **Tasks, not vibes** — progress is a checklist that can be verified, not a feeling.
-- **Steering = consistency** — academic style rules are written once and applied by every agent, every session.
+This link is retained from the original project. Its content has not been checked against the new manager; it is not validation evidence for this implementation.
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
-
-**Built with Kiro.**
